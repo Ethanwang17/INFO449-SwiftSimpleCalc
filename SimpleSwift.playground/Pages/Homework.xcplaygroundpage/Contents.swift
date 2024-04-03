@@ -208,7 +208,7 @@ func calculate(_ args: [String]) -> Double {
             }
         case "%":
             if num2 != 0 {
-                result = num1.truncatingRemainder(dividingBy: num2)
+                result = num1.remainder(dividingBy: num2)
             }
         default:
             break
