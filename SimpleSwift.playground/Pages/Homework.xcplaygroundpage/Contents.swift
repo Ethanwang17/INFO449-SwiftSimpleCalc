@@ -27,20 +27,83 @@ print("Welcome to the UW Calculator Playground")
 //: For this latter set of operations, it is safe to assume that `["count"]` (with no additional arguments) is 0, `["avg"]` is also 0, and `["fact"]` is 0. `["1", "fact"]` should return 1, and `["0", "fact"]` should also return 1. (Yes, 0-factorial is 1. True story.)
 //: 
 func calculate(_ args: [String]) -> Int {
-    return -1
+    var result = 0
+    if args.contains("avg") {
+        result = average(args)
+        return result
+    }
+    
+    if args.contains("fact") {
+            if let num = Int(args[0]) {
+                result = factorial(num)
+            }
+        return result
+        
+        }
+    
+    if args.contains("count") {
+        let result = args.count - 1
+        return result
+        }
+    
+    else {
+        let num1 = Int(args[0])!
+        let num2 = Int(args[2])!
+        switch args[1] {
+            case "+":
+                result = num1 + num2
+            case "-":
+                result = num1 - num2
+            case "*":
+                result = num1 * num2
+            case "/":
+                if num2 != 0 {
+                    result = num1 / num2
+                }
+            case "%":
+                if num2 != 0 {
+                    result = num1 % num2
+                }
+            default:
+                break
+        }
+    }
+    
+    return result
 }
 
 func calculate(_ arg: String) -> Int {
-    return -1
+    let components = arg.split(separator: " ").map { String($0) }
+    return calculate(components)
 }
 
+
+func factorial(_ n: Int) -> Int {
+ if n == 0 { return 1 }
+ else { return n * factorial(n - 1) }
+}
+
+func average(_ args: [String]) -> Int {
+    var sum = 0
+    var count = 0
+    for arg in args {
+        if let num = Int(arg) {
+            sum += num
+            count += 1
+        }
+    }
+    if count > 0 {
+        return sum / count
+    }
+    return 0
+}
 //: Below this are the test expressions/calls to verify if your code is correct.
 //:
 //: ***DO NOT MODIFY ANYTHING BELOW THIS***
 //: -------------------------------------------
 //: All of these expressions should return true
 //: if you have implemented `calculate()` correctly
-//
+
 calculate(["2", "+", "2"]) == 4
 calculate(["4", "+", "4"]) == 8
 calculate(["2", "-", "2"]) == 0
@@ -85,7 +148,7 @@ calculate("5 fact") == 120
 //: Implement `calculate([String])` and `calculate(String)` to handle negative numbers. You need only make the tests below pass. (You do not need to worry about "fact"/factorial with negative numbers, for example.)
 //:
 //: This is worth 1 pt
-/*
+
 calculate(["2", "+", "-2"]) == 0
 calculate(["2", "-", "-2"]) == 4
 calculate(["2", "*", "-2"]) == -4
@@ -100,7 +163,7 @@ calculate("2 - -2") == 4
 calculate("-2 / 2") == -1
 
 calculate("1 -2 3 -4 5 count") == 5
-*/
+
  
 //: Implement `calculate([String])` and `calculate(String)` to use 
 //: and return floating-point values. You need only make the tests 
@@ -112,12 +175,67 @@ calculate("1 -2 3 -4 5 count") == 5
 //: Integer-based versions above.
 //: 
 //: This is worth 1 pt
-/*
 func calculate(_ args: [String]) -> Double {
-    return -1.0
+    var result = 0.0
+    
+    if args.contains("avg") {
+        result = average(args)
+        return result
+    }
+    
+    if args.contains("count") {
+        let result = Double(args.count - 1)
+        return result
+    }
+    
+    if args.contains("fact") {
+        return 0.0 // Factorial of floating-point numbers doesn't make sense
+    }
+    
+    if args.count == 3 {
+        let num1 = Double(args[0])!
+        let num2 = Double(args[2])!
+        switch args[1] {
+        case "+":
+            result = num1 + num2
+        case "-":
+            result = num1 - num2
+        case "*":
+            result = num1 * num2
+        case "/":
+            if num2 != 0 {
+                result = num1 / num2
+            }
+        case "%":
+            if num2 != 0 {
+                result = num1.truncatingRemainder(dividingBy: num2)
+            }
+        default:
+            break
+        }
+    }
+    
+    return result
 }
+
 func calculate(_ arg: String) -> Double {
-    return -1.0
+    let components = arg.split(separator: " ").map { String($0) }
+    return calculate(components)
+}
+
+func average(_ args: [String]) -> Double {
+    var sum = 0.0
+    var count = 0
+    for arg in args {
+        if let num = Double(arg) {
+            sum += num
+            count += 1
+        }
+    }
+    if count > 0 {
+        return sum / Double(count)
+    }
+    return 0.0
 }
 
 calculate(["2.0", "+", "2.0"]) == 4.0
@@ -127,4 +245,4 @@ calculate(["2.5", "*", "2.5"]) == 6.25
 calculate(["2.0", "/", "2.0"]) == 1.0
 calculate(["2.0", "%", "2.0"]) == 0.0
 calculate("1.0 2.0 3.0 4.0 5.0 count") == 5.0
-*/
+
